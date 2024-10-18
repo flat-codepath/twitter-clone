@@ -25,4 +25,5 @@ def create_profile(sender, instance, created, **kwargs):
         user_profile.fallows.set([instance.profile.user.id])
 
 
+
 post_save.connect(create_profile, sender=User)
