@@ -20,7 +20,20 @@ def profile_list(request):
 
 def profile(request, pk):
     if request.user.is_authenticated:
-        profile = Profile.objects.get(user_id=pk)
+        profile = Profile.objects.get(user_id=pk) # Soni
+        #Post Form Logic
+        if request.method =="POST":
+            # Get current.ID
+            current_user_profile =request.user.profile
+            # Get form data
+            action=request.POST['follow']
+            #Decide to follow or unfollow
+            if action =='unfollow':
+                current_user_profile.fallows.remove(profile)
+            elif action == 'follow':
+                current_user_profile.fallows.add(profile)
+            # Save the Profile
+            current_user_profile.save()
         return render(request, 'profile.html', {'profile': profile})
     else:
         messages.success(request, ('you Must Be Logged in To view This '))
