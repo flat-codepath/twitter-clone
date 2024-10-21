@@ -4,6 +4,13 @@
 
 <h2> Meeps!</h2>
 
+{% for meep in meeps %}
+    <div class="alert alert-primary" role="alert">
+      {{meep}}
+    </div>
+
+{% endfor %}
+
 
 
 {% endblock %}
