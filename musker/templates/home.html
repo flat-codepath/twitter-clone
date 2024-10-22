@@ -1,17 +1,28 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
-<h2> Meeps!</h2>
-
-{% for meep in meeps %}
-    <div class="alert alert-primary" role="alert">
-      {{meep}}
+<div class="container-fluid text-center row">
+    <div class="col-8">
+        <h2> Meeps!</h2>
+           {% for meep in meeps %}
+            <div class="alert alert-primary" role="alert">
+                {{meep.body}}
+                <br>
+                <small>{{meep.user}}</small>
+                <small>{{meep.created_at}}</small>
+              </div>
+           {% endfor %}
     </div>
-
-{% endfor %}
-
-
+    {% if form %}
+    <div class="col-4 text-center mt-4">
+        <form method="POST" class="mt-4">
+            {% csrf_token %}
+            {{form.as_p}}
+            <button type="submit"  class="btn btn-primary">Meep!</button>
+        </form>
+    </div>
+    {% endif %}
+</div>
 
 {% endblock %}
 
