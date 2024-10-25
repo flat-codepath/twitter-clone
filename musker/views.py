@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
 from .models import Profile, Meep
 from django.contrib import messages
-from .forms import MeepForm
+from .forms import MeepForm,SigninForm
 from django.contrib.auth import authenticate, login, logout
-
+from django.contrib.auth.forms import  UserCreationForm
 
 # Create your views here.
 def home(request):
@@ -74,3 +74,27 @@ def user_logout(request):
     logout(request)
     success = messages.success(request, 'You are Logged Out... Now')
     return redirect('home')
+
+
+def signin(request):
+    form=SigninForm()
+    if request.method=='POST':
+        form=SigninForm(request.POST)
+        if form.is_valid():
+            username=form.cleaned_data['username']
+            print(username)
+            password=form.cleaned_data['password1']
+            print(password)
+            form.save(commit=True)
+            user = authenticate(request, username=username, password=password)
+            print(user)
+            if user is not None:
+                login(request,user)
+                message=messages.success(request,'SuccessFully Created Signin')
+                return redirect('home')
+            else:
+                error=messages.error(request,"There is Problem Try again ...")
+                redirect('signin')
+        else:
+            error=messages.error(request,form.errors)
+    return render(request, 'signin.html', {'form':form})
