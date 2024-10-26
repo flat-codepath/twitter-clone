@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
 from .models import Profile, Meep
 from django.contrib import messages
-from .forms import MeepForm,SigninForm
+from .forms import MeepForm,SigninForm,UpdateUser
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import  UserCreationForm
+from django.contrib.auth.forms import  UserCreationForm,UserChangeForm
 
 # Create your views here.
 def home(request):
@@ -98,3 +98,24 @@ def signin(request):
         else:
             error=messages.error(request,form.errors)
     return render(request, 'signin.html', {'form':form})
+
+# Update Profile
+def update_user(request):
+   if request.user.is_authenticated:
+        if request.method == "POST":
+            form=UpdateUser(request.POST,instance=request.user)
+            if form.is_valid():
+                form.save()
+                messages.success(request,"Your Profile has been updated")
+                return redirect('home')
+            else:
+                messages.error(request,form.errors)
+                return redirect('updateuser')
+        else:
+            form = UpdateUser(instance=request.user)
+            return render(request, 'updateProfile.html', {'form':form})
+   else:
+      messages.error(request,"You Must Be Logged in to Update")
+      return redirect('home')
+
+
