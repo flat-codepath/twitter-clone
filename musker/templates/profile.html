@@ -20,10 +20,18 @@
 
     </div>
 
+
     <br>
     <br>
 
     <div class="col-md-4 mt-4">
+        {% if profile.profile_image %}
+       <img src="{{profile.profile_image.url}}" height="150px" width="80%" class="mx-5" style="border:50%">
+        <br>
+        <br>
+        {% else %}
+       UPLOAD PROFILE
+        {% endif %}
         <div class="card text-center">
             <h5 class="card-header">Fallows</h5>
             <div class="card-body">
