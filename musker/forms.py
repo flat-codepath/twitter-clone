@@ -1,7 +1,15 @@
 from django import forms
-from .models import Meep
+from .models import Meep, Profile
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+
+
+# create profileExtension form
+class ProfilePicForm(forms.ModelForm):
+    profile_image = forms.ImageField(label='upload profile')
+    class Meta:
+        model = Profile
+        fields = ('profile_image',)
 
 
 # create a Meep from
@@ -73,7 +81,9 @@ class UpdateUser(UserChangeForm):
                                  widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'First Name'}))
     last_name = forms.CharField(label='',
                                 widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Last Name'}))
-    email=forms.EmailField(label='',widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Email Address'}))
+    email = forms.EmailField(label='',
+                             widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Email Address'}))
+
     class Meta:
         model = User
         fields = ['username', 'first_name', 'last_name', 'email']

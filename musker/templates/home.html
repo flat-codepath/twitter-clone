@@ -6,11 +6,20 @@
         <h2> Meeps!</h2>
            {% for meep in meeps %}
             <div class="alert alert-primary" role="alert">
-                {{meep.body}}
-                <br>
-                <small>{{meep.user}}</small>
-                <small>{{meep.created_at}}</small>
-              </div>
+            <div class="row">
+                <div class="col-md-2">
+
+                  <img src="{{meep.user.profile.profile_image.url }}" class="img-fluid rounded-start" alt="...">
+                </div>
+
+                <div class="col-md-10">
+                    {{meep.body}}
+                    <br>
+                    <small>{{meep.user}}</small>
+                    <small>{{meep.created_at}}</small>
+                </div>
+            </div>
+            </div>
            {% endfor %}
     </div>
     {% if form %}

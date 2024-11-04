@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load static %}
 
 {% block content %}
 {% if profile %}
@@ -9,13 +9,28 @@
     <h2 class="text-center text-primary ">{{ profile.user.username}}'s profile</h2>
 
 <!--   Meep Stuff-->
-      {% if meeps %}
+
+
+
+         {% if meeps %}
         {% for meep in meeps %}
-    <div class="alert alert-primary" role="alert">
-      {{meep}}
-    </div>
+        <div class="row alert alert-primary">
+            <div class="col-md-3">
+                {% if profile.profile_image %}
+               <img src="{{profile.profile_image.url}}" class="img-fluid rounded-start rounded-circle mt-3" width="50" height="50"   alt="...">
+                    {% else %}
+               <img src="{% static 'images/defaultProfile.jpg'  %}" class="img-fluid rounded-start" alt="...">
+                {% endif %}
+            </div>
+            <div class="col-md-9">
+                {{meep}}
+            </div>
+        </div>
+
       {% endfor %}
       {% endif %}
+
+
 
 
     </div>
@@ -26,11 +41,11 @@
 
     <div class="col-md-4 mt-4">
         {% if profile.profile_image %}
-       <img src="{{profile.profile_image.url}}" height="150px" width="80%" class="mx-5" style="border:50%">
+       <img src="{{profile.profile_image.url}}" height="150px" width="80%" class="mx-5 rounded-circle"  style="border:50%">
         <br>
-        <br>
+        <br >
         {% else %}
-       UPLOAD PROFILE
+              <img src="{% static 'images/defaultProfile.jpg'  %}" class="img-fluid rounded-circle mx-5 mb-2" alt="...">
         {% endif %}
         <div class="card text-center">
             <h5 class="card-header">Fallows</h5>

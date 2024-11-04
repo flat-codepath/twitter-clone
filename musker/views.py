@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
 from .models import Profile, Meep
 from django.contrib import messages
-from .forms import MeepForm,SigninForm,UpdateUser
+from .forms import MeepForm, SigninForm, UpdateUser, ProfilePicForm
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import  UserCreationForm,UserChangeForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+
 
 # Create your views here.
 def home(request):
@@ -34,9 +35,7 @@ def profile_list(request):
 def profile(request, pk):
     if request.user.is_authenticated:
         profile = Profile.objects.get(user_id=pk)  # Soni
-
         meeps = Meep.objects.filter(user_id=pk)
-
         # Post Form Logic
         if request.method == "POST":
             # Get current.ID
@@ -77,45 +76,53 @@ def user_logout(request):
 
 
 def signin(request):
-    form=SigninForm()
-    if request.method=='POST':
-        form=SigninForm(request.POST)
+    form = SigninForm()
+    if request.method == 'POST':
+        form = SigninForm(request.POST)
         if form.is_valid():
-            username=form.cleaned_data['username']
+            username = form.cleaned_data['username']
             print(username)
-            password=form.cleaned_data['password1']
+            password = form.cleaned_data['password1']
             print(password)
             form.save(commit=True)
             user = authenticate(request, username=username, password=password)
             print(user)
             if user is not None:
-                login(request,user)
-                message=messages.success(request,'SuccessFully Created Signin')
+                login(request, user)
+                message = messages.success(request, 'SuccessFully Created Signin')
                 return redirect('home')
             else:
-                error=messages.error(request,"There is Problem Try again ...")
+                error = messages.error(request, "There is Problem Try again ...")
                 redirect('signin')
         else:
-            error=messages.error(request,form.errors)
-    return render(request, 'signin.html', {'form':form})
+            error = messages.error(request, form.errors)
+    return render(request, 'signin.html', {'form': form})
+
 
 # Update Profile
 def update_user(request):
-   if request.user.is_authenticated:
+    if request.user.is_authenticated:
+        profile_user = Profile.objects.get(user__id=request.user.id)
+
         if request.method == "POST":
-            form=UpdateUser(request.POST,instance=request.user)
-            if form.is_valid():
+
+            form = UpdateUser(request.POST, instance=request.user)
+            profile_form = ProfilePicForm(request.POST, request.FILES, instance=profile_user)
+
+            # print(profile_form.cleaned_data['profile_image'])
+            if form.is_valid() and profile_form.is_valid():
                 form.save()
-                messages.success(request,"Your Profile has been updated")
+                profile_form.save()
+
+                messages.success(request, "Your Profile has been updated")
                 return redirect('home')
             else:
-                messages.error(request,form.errors)
-                return redirect('updateuser')
+                messages.error(request, form.errors)
+                return redirect('update_user')
         else:
             form = UpdateUser(instance=request.user)
-            return render(request, 'updateProfile.html', {'form':form})
-   else:
-      messages.error(request,"You Must Be Logged in to Update")
-      return redirect('home')
-
-
+            profile_form = ProfilePicForm(instance=profile_user)
+            return render(request, 'updateProfile.html', {'form': form, 'profile_form': profile_form})
+    else:
+        messages.error(request, "You Must Be Logged in to Update")
+        return redirect('home')
