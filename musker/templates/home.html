@@ -1,24 +1,24 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
 <div class="container-fluid text-center row">
     <div class="col-8">
         <h2> Meeps!</h2>
            {% for meep in meeps %}
-            <div class="alert alert-primary" role="alert">
-            <div class="row">
-                <div class="col-md-2">
-
-                  <img src="{{meep.user.profile.profile_image.url }}" class="img-fluid rounded-start" alt="...">
-                </div>
-
-                <div class="col-md-10">
+            <div class="alert alert-primary row" role="alert">
+               <div class="col-md-1">
+                    {% if meep.user.profile.profile_image %}
+                   <img src="{{meep.user.profile.profile_image.url}}" class="img-fluid rounded-start  mt-3" width="50" height="50"   alt="...">
+                        {% else %}
+                   <img src="{% static 'images/defaultProfile.jpg'  %}" class="img-fluid rounded-start rounded-circle" alt="..." width="50" height="50">
+                    {% endif %}
+               </div>
+                <div class="col-md-11">
                     {{meep.body}}
                     <br>
                     <small>{{meep.user}}</small>
                     <small>{{meep.created_at}}</small>
                 </div>
-            </div>
             </div>
            {% endfor %}
     </div>
