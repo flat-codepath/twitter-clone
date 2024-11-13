@@ -15,17 +15,31 @@
          {% if meeps %}
         {% for meep in meeps %}
         <div class="row alert alert-primary">
-            <div class="col-md-3">
+            <div class="col-md-1">
                 {% if profile.profile_image %}
                <img src="{{profile.profile_image.url}}" class="img-fluid rounded-start rounded-circle mt-3" width="50" height="50"   alt="...">
                     {% else %}
                <img src="{% static 'images/defaultProfile.jpg'  %}" class="img-fluid rounded-start" alt="...">
                 {% endif %}
             </div>
-            <div class="col-md-9">
+            <div class="col-md-10">
                 {{meep}}
             </div>
+             <div class="col-md-1 text-center ">
+                     {{meep.number_of_likes}}Likes-
+                    {% if user in meep.likes.all %}
+                    <a class="bi bi-heart bg-danger" href="{% url 'meep_like' meep.id %}" style="color:red"></a>
+                    {% else %}
+                    <a class="bi bi-heart" href="{% url 'meep_like' meep.id %}" style="color:red"></a>
+                    {% endif %}
+                     <br>
+                    <a href="{% url 'meep_show' meep.id %}" class="bi bi-share" style="color:blue"></a>
+
+                </div>
+
+
         </div>
+
 
       {% endfor %}
       {% endif %}
@@ -78,7 +92,7 @@
             {% csrf_token %}
 
             {% if  profile in request.user.profile.fallows.all %}
-                <button class="btn btn-outline-danger" name="follow"  value="unfollow"  type="submit">
+                <button class="btn btn-outline-danger " name="follow"  value="unfollow"  type="submit">
                     Unfollow@{{ profile.user.username|lower}}</button>
 
              {% else %}
