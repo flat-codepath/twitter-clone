@@ -28,7 +28,7 @@
              <div class="col-md-1 text-center ">
                      {{meep.number_of_likes}}Likes-
                     {% if user in meep.likes.all %}
-                    <a class="bi bi-heart bg-danger" href="{% url 'meep_like' meep.id %}" style="color:red"></a>
+                    <a class="bi bi-heart " href="{% url 'meep_like' meep.id %}" style="color:red"></a>
                     {% else %}
                     <a class="bi bi-heart" href="{% url 'meep_like' meep.id %}" style="color:red"></a>
                     {% endif %}
@@ -53,7 +53,7 @@
     <br>
     <br>
 
-    <div class="col-md-4 mt-4">
+    <div class="col-md-4 mt-4 text-center ">
         {% if profile.profile_image %}
        <img src="{{profile.profile_image.url}}" height="150px" width="80%" class="mx-5 rounded-circle"  style="border:50%">
         <br>
@@ -61,6 +61,31 @@
         {% else %}
               <img src="{% static 'images/defaultProfile.jpg'  %}" class="img-fluid rounded-circle mx-5 mb-2" alt="...">
         {% endif %}
+            {% if profile.profile_bio %}
+                    <p  class="text-center " style="color:grey" align="justify">{{ profile.profile_bio }} </p>
+            {% endif %}
+
+             {% if profile.linkedin_like %}
+                 <a  href="{{profile.linkedin_like}}" target="new"  style="color:grey">
+                     <i class="bi bi-linkedin mx-3 fs-4 mb-2 "></i>
+                 </a>
+              {% endif %}
+
+             {% if profile.instagram_link %}
+                <a class="text-center" href="{{ profile.instagram_link}}" target="new" style="color:grey">
+                     <i class="bi bi-instagram mx-3 fs-4 mb-2" ></i>
+                </a>
+            {% endif %}
+
+             {% if profile.facebook_link %}
+              <a href="{{ profile.facebook_link }}" style="color:grey">
+                 <i class="bi bi-facebook mx-3 fs-3 mb-2"></i>
+              </a>
+              {% endif %}
+        <br>
+        <br>
+
+
         <div class="card text-center">
             <h5 class="card-header">Fallows</h5>
             <div class="card-body">

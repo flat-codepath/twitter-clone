@@ -7,9 +7,14 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 # create profileExtension form
 class ProfilePicForm(forms.ModelForm):
     profile_image = forms.ImageField(label='upload profile')
+    profile_bio = forms.CharField(label='', widget=forms.Textarea(attrs={'class':"form-control",'placeholder':'Profile bio'}) )
+    homepage_link= forms.CharField(label='', widget=forms.TextInput(attrs={'class':"form-control",'placeholder':'Website url'}) )
+    facebook_link = forms.CharField(label='', widget=forms.TextInput(attrs={'class':"form-control",'placeholder':'Facebook Url'}) )
+    instagram_link = forms.CharField(label='', widget=forms.TextInput(attrs={'class':"form-control",'placeholder':'Instagram Url'}) )
+    linkedin_like =forms.CharField(label='',widget=forms.TextInput(attrs={'class':'form-control','placeholder':'LinkedIn url'}))
     class Meta:
         model = Profile
-        fields = ('profile_image',)
+        fields = ('profile_image', 'profile_bio', 'facebook_link','instagram_link','linkedin_like')
 
 
 # create a Meep from
