@@ -92,7 +92,7 @@
                <p class="card-text">
                    <strong>Follows</strong><br>
                   {% for following in profile.fallows.all %}
-                     <a href="{% url 'profile' following.user.id %}" > @{{following}}</a><br>
+                     <a href="{% url 'profile' following.user.id %}" > @{{following}}</a> <a href="{% url 'unfollow' following.user.id %}" class="text-danger bi bi-trash"></a><br>
                   {% endfor %}
                </p>
 

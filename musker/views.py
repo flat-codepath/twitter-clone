@@ -149,3 +149,17 @@ def meep_show(request, pk):
         messages.error(request, "that Meep Does not existing")
         return redirect('home')
 
+
+def unfollow(request,pk):
+    if request.user.is_authenticated:
+        #Get the profile to unfallow
+        profile=Profile.objects.get(user_id=pk)
+        #unfallow the user
+        request.user.profile.fallows.remove(profile)
+        #save our profile
+        request.user.profile.save()
+        messages.success(request,f"you have succesfully unfallowed {profile.user.username}")
+        return redirect('home')
+    else:
+        messages.success(request,"You Must Be logged in to do this")
+        return redirect('home')
