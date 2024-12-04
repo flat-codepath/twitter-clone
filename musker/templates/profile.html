@@ -94,6 +94,8 @@
                   {% for following in profile.fallows.all %}
                      <a href="{% url 'profile' following.user.id %}" > @{{following}}</a> <a href="{% url 'unfollow' following.user.id %}" class="text-danger bi bi-trash"></a><br>
                   {% endfor %}
+                   <br>
+
                </p>
 
 
@@ -103,9 +105,17 @@
             <h5 class="card-header">Fallowed By</h5>
             <div class="card-body">
                <p class="card-text">
-                  {% for following in profile.fallowed_by.all %}
-                     <a href="{% url 'profile' following.user.id %}" > @{{following}}</a><br>
+                  {% for following in profile.fallowed_by.all.all|slice:3 %}
+                     <a href="{% url 'profile' following.user.id %}" > @{{following}}</a>
+                     {% if following in profile.fallows.all%}
+                   <a href="{% url 'unfollow' following.user.id %}" class="text-danger bi bi-trash"></a>unfollow
+                     {% else %}
+                        <a href="{% url 'follow' following.user.id %}" class="text-success">fallow</a>
+                   {% endif %}
+                   <br>
                   {% endfor %}
+                   <br>
+                   <a href=" {% url 'followers' profile.user.id %}" >See All...</a>
                </p>
             </div>
 
@@ -128,10 +138,9 @@
             {%  if request.user.id == profile.user.id %}
                    <br>
                     <button class="btn btn-outline-primary  mt-2 " >
-                  <a class="nav-link" href="{% url 'update_user' %}">Update Profile</a>
-                   </button>
+                    <a class="nav-link" href="{% url 'update_user' %}">Update Profile</a>
+                    </button>
                     {% endif %}
-
         </form>
         <br>
 

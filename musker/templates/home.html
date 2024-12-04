@@ -26,12 +26,8 @@
                     {% else %}
                     <a class="bi bi-heart" href="{% url 'meep_like' meep.id %}" style="color:red"></a>
                     {% endif %}
-
                     <a href="{% url 'meep_show' meep.id %}" class="bi bi-share" style="color:blue"></a>
-
                 </div>
-
-
             </div>
            {% endfor %}
     </div>
@@ -45,6 +41,4 @@
     </div>
     {% endif %}
 </div>
-
 {% endblock %}
-
